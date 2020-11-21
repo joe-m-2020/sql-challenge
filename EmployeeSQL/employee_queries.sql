@@ -1,49 +1,4 @@
----Import Titles first and so on in order to populate foreign keys with existing data
 
-CREATE TABLE titles(
-	title_id VARCHAR(64) PRIMARY KEY,
-	title VARCHAR(64)
-);
-
-CREATE TABLE employees(
-	emp_no VARCHAR(64) PRIMARY KEY,
-	emp_title_id VARCHAR(64),
-	FOREIGN KEY (emp_title_id) REFERENCES titles(title_id),
-	birth_date VARCHAR(64),
-	first_name VARCHAR(64),
-	last_name VARCHAR(64),
-	sex VARCHAR(64),
-	hire_date DATE
-);
-
-CREATE TABLE departments(
-	dept_no VARCHAR(64) PRIMARY KEY,
-	dept_name VARCHAR(64)
-);
-
-
-CREATE TABLE dept_emp(
-	emp_no VARCHAR(64),
-	FOREIGN KEY (emp_no) REFERENCES employees(emp_no),
-	dept_no VARCHAR(64),
-	PRIMARY KEY (emp_no,dept_no)
-);
-
-CREATE TABLE dept_manager(
-	dept_no VARCHAR(64),
-	FOREIGN KEY (dept_no) REFERENCES departments(dept_no),
-	emp_no VARCHAR(64),
-	FOREIGN KEY (emp_no) REFERENCES employees(emp_no),
-	PRIMARY KEY (dept_no,emp_no)
-);
-
-CREATE TABLE salaries(
-	id SERIAL PRIMARY KEY,
-	emp_no VARCHAR(64),
-	FOREIGN KEY (emp_no) REFERENCES employees(emp_no),
-	salary INTEGER
-	
-)
 
 SELECT * FROM employees;
 SELECT * FROM salaries;
@@ -53,20 +8,11 @@ FROM employees e
 LEFT JOIN salaries s 
 ON e.emp_no = s.emp_no;
 
+--List first name, last name, and hire date for employees who were hired in 1986.
+
 SELECT first_name,last_name, hire_date FROM employees
 WHERE hire_date >= '1986-01-01' AND hire_date <= '1986-12-31';
 
-/*
-Checking that data-types were imported correctly for my own sanity
-SELECT COLUMN_NAME,
-       DATA_TYPE,
-	   IS_NULLABLE,
-       CHARACTER_MAXIMUM_LENGTH,
-       NUMERIC_PRECISION,
-       NUMERIC_SCALE
-FROM INFORMATION_SCHEMA.COLUMNS
-WHERE TABLE_NAME='employees';
-*/
 
 -- List the manager of each department with the following information: 
 --department number, department name, the manager's employee number, last name, first name.
